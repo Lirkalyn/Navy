@@ -16,6 +16,7 @@ SRC		=	main.c \
 			scr/cmp.c \
 			scr/checker.c \
 			scr/map_maker.c \
+			scr/boat_maker.c
 
 OBJ		=	$(SRC:.c=.o)
 

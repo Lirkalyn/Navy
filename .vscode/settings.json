@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "racket": "racket",
+        "algorithm": "c"
+    }
+}

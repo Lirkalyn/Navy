@@ -14,30 +14,6 @@
 
 #include <stdio.h>
 
-/*int check_map3(char *path)
-{
-    char *buf;
-    char *tmp;
-    int fd = open(path, O_RDONLY);
-    int lenght = 31;
-    int i = 0;
-
-    buf = (char *)malloc((lenght + 1) * sizeof(char));
-    if (fd == -1 || buf == NULL)
-        return 84;
-    read(fd, buf, lenght);
-    buf[lenght] = '\0';
-    close(fd);
-    while (buf[i] != '\0') {
-        i += (i != 0) ? 1 : 0;
-        tmp = (char *)malloc((7 + 1) * sizeof(char));
-        for (int j = 0; buf[i] != '\n' && buf[i] != '\0'; tmp[j++] = buf[i++]);
-//        if (check_map2(tmp) == 1)
-//            return 1;
-    }
-//    return 0;
-}*/
-
 int start_game(int argc, char *argv[])
 {
     char **map;
@@ -47,7 +23,9 @@ int start_game(int argc, char *argv[])
     map = map_maker(argv[(argc - 1)]);
     if (map == NULL)
         return 84;
-//    my_show_word_array(map);
+    map = boat_maker(argv[(argc - 1)], map);
+    if (map[0][0] == '0')
+        return 84;
 }
 
 int main(int argc, char *argv[])
