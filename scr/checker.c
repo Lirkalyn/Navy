@@ -52,7 +52,7 @@ int check_map(char *path)
         i += (i != 0) ? 1 : 0;
         tmp = (char *)malloc((7 + 1) * sizeof(char));
         for (int j = 0; buf[i] != '\n' && buf[i] != '\0'; tmp[j++] = buf[i++]);
-        if (check_map2(tmp) == 1)
+        if ((check_map2(tmp) == 1) || (tmp[0] < '2' || tmp[0] > '5'))
             return 1;
     }
     return 0;
