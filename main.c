@@ -7,12 +7,36 @@
 
 /*#include <stdlib.h>
 #include <time.h>*/
+//#include <sigaction.h>
+#include <signal.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "include/my.h"
+#include "include/printf.h"
 
 #include <stdio.h>
+
+void test(int si, siginfo_t *siginfo, void *context)
+{
+//    get_pid(siginfo->si_pid)
+    my_printf("ok");
+//    kill(get_pid(0), SIGUSR1);
+}
+
+int find_enemy(int argc, char *argv[])
+{
+    struct sigaction sig;
+
+    sig.sa_flags = SA_SIGINFO;
+    if (argc == 2) {
+        my_printf("my_pid: %d\nwaiting for enemy connection...\n\n", getpid());
+        sig.sa_sigaction = &test;
+        sigaction(SIGUSR1, &sig, NULL);
+        usleep(100000000.0);
+    }
+}
 
 int start_game(int argc, char *argv[])
 {
@@ -26,6 +50,8 @@ int start_game(int argc, char *argv[])
     map = boat_maker(argv[(argc - 1)], map);
     if (map[0][0] == '0')
         return 84;
+    find_enemy(argc, argv);
+//    my_show_word_array(map);
 }
 
 int main(int argc, char *argv[])

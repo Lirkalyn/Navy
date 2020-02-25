@@ -21,13 +21,16 @@ SRC		=	main.c \
 OBJ		=	$(SRC:.c=.o)
 
 $(NAME)	:	$(OBJ)
-			gcc $(OBJ) -o $(NAME) -Wall -Wextra
+			make -C lib/my
+			gcc $(OBJ) -o $(NAME) -Wall -Wextra -L./lib/ -lmy
 
 clean	:
 			rm -f $(OBJ)
+			make clean -C lib/my
 
 fclean	:	clean
 			rm -f $(NAME)
+			make fclean -C lib/my
 
 re		:	fclean $(NAME)
 
