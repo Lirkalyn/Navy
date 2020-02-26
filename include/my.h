@@ -18,5 +18,7 @@ int check_map2(char *line);
 int my_show_word_array(char * const *tab);
 char **map_maker(char *path);
 char **boat_maker(char *path, char **map);
+int find_enemy(int argc, char *argv[]);
+int get_pid(int pid);
 
 #endif

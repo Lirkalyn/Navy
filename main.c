@@ -8,6 +8,7 @@
 /*#include <stdlib.h>
 #include <time.h>*/
 //#include <sigaction.h>
+#include <sys/signal.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -18,15 +19,27 @@
 
 #include <stdio.h>
 
+/*int epid = 0;
+
+int get_pid(int pid)
+{
+    if (pid == 0)
+        return epid;
+    else
+        epid = pid;
+}
+
 void test(int si, siginfo_t *siginfo, void *context)
 {
-//    get_pid(siginfo->si_pid)
-    my_printf("ok");
-//    kill(get_pid(0), SIGUSR1);
+    get_pid(siginfo->si_pid);
+//    my_printf("ok %d\n", get_pid(0));
+    kill(get_pid(0), SIGUSR2);
+    my_printf("enemy connected\n\n");
 }
 
 int find_enemy(int argc, char *argv[])
 {
+    int pid = 0;
     struct sigaction sig;
 
     sig.sa_flags = SA_SIGINFO;
@@ -34,9 +47,17 @@ int find_enemy(int argc, char *argv[])
         my_printf("my_pid: %d\nwaiting for enemy connection...\n\n", getpid());
         sig.sa_sigaction = &test;
         sigaction(SIGUSR1, &sig, NULL);
-        usleep(100000000.0);
+        if (usleep(100000000.0) == -1)
+            return 84;
     }
-}
+    else if (argc == 3) {
+        for (int i = 0; argv[1][i] != '\0'; i++)
+            pid = ((pid * 10) + (argv[1][i] - '0'));
+        kill(pid, SIGUSR1);
+        sigaction(SIGUSR2, &sig, NULL);
+    }
+    return 0;
+}*/
 
 int start_game(int argc, char *argv[])
 {
@@ -50,8 +71,8 @@ int start_game(int argc, char *argv[])
     map = boat_maker(argv[(argc - 1)], map);
     if (map[0][0] == '0')
         return 84;
-    find_enemy(argc, argv);
-//    my_show_word_array(map);
+    if (find_enemy(argc, argv) == 84)
+        return 84;
 }
 
 int main(int argc, char *argv[])

@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "racket": "racket",
-        "algorithm": "c"
+        "algorithm": "c",
+        "signal.h": "c"
     }
 }
