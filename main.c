@@ -19,53 +19,87 @@
 
 #include <stdio.h>
 
-/*int epid = 0;
-
-int get_pid(int pid)
+/*char **act(char **map, char **enemy_map, int *letter, int *number)
 {
-    if (pid == 0)
-        return epid;
-    else
-        epid = pid;
-}
+    char let = (((letter[0] * 4) + (letter[1] * 2) + letter[2]) + 65);
+    char num = ((number[0] * 4) + (number[1] * 2) + number[2] + 1);
+    int *coor = boat_maker3(0, num, let, map);
+    int tmp = get_pid(0);
 
-void test(int si, siginfo_t *siginfo, void *context)
-{
-    get_pid(siginfo->si_pid);
-//    my_printf("ok %d\n", get_pid(0));
-    kill(get_pid(0), SIGUSR2);
-    my_printf("enemy connected\n\n");
-}
-
-int find_enemy(int argc, char *argv[])
-{
-    int pid = 0;
-    struct sigaction sig;
-
-    sig.sa_flags = SA_SIGINFO;
-    if (argc == 2) {
-        my_printf("my_pid: %d\nwaiting for enemy connection...\n\n", getpid());
-        sig.sa_sigaction = &test;
-        sigaction(SIGUSR1, &sig, NULL);
-        if (usleep(100000000.0) == -1)
-            return 84;
+    get_pid(-99);
+    if (map[coor[1]][coor[0]] == '.') {
+        enemy_map[coor[1]][coor[0]] = 'o';
+        pause();
+        kill(tmp, SIGUSR1);
     }
-    else if (argc == 3) {
-        for (int i = 0; argv[1][i] != '\0'; i++)
-            pid = ((pid * 10) + (argv[1][i] - '0'));
-        kill(pid, SIGUSR1);
-        sigaction(SIGUSR2, &sig, NULL);
+    else if (map[coor[1]][coor[0]] >= '1' && map[coor[1]][coor[0]] <= '8') {
+        map[coor[1]][coor[0]] = 'x';
+        pause();
+        kill(tmp, SIGUSR2);
     }
-    return 0;
+    get_pid(tmp);
+    return enemy_map;
 }*/
+
+int game2(char **map, char ***enemy_map, int *turn, int *pos)
+{
+    char *line = NULL;
+    int *letter = (int *)malloc(3 * sizeof(int));
+    int *number = (int *)malloc(3 * sizeof(int));
+    int touch = 0;
+
+    if (*turn == 1) {
+        line = input_check(map, *enemy_map, pos);
+        if (line == NULL)
+            return 84;
+        send(line, turn, pos);
+        touch = hit_or_miss();
+        *enemy_map = act2(map, *enemy_map, touch, line);
+        *turn += 1;
+    }
+    else if (*turn == 2) {
+        receive(line, turn, letter, number);
+        *enemy_map = act(map, *enemy_map, letter, number);
+        *turn -= 1;
+/*        for (int i = 0; i < 3; i++)
+            my_printf("%d", letter[i]);
+        my_printf("\n");
+        for (int i = 0; i < 3; i++)
+            my_printf("%d", number[i]);*/
+    }
+}
+
+int game(char **map, int *loop, int turn)
+{
+    int *pos = (int *)malloc(2 * sizeof(int));
+    char **enemy_map;
+    //int loop = 2;
+
+    enemy_map = map_maker();
+    if (enemy_map == NULL || pos == NULL)
+        return 84;
+        my_printf("my positions:\n");
+        my_show_word_array(map);
+        my_printf("\nenemy's positions:\n");
+        my_show_word_array(enemy_map);
+    while (*loop == 2) {
+        game2(map, &enemy_map, &turn, pos);
+        my_printf("my positions:\n");
+        my_show_word_array(map);
+        my_printf("\nenemy's positions:\n");
+        my_show_word_array(enemy_map);
+    }
+}
 
 int start_game(int argc, char *argv[])
 {
     char **map;
+    int loop = 2;
+    int turn = 0;
 
     if (check_map(argv[(argc - 1)]) == 1)
         return 84;
-    map = map_maker(argv[(argc - 1)]);
+    map = map_maker();
     if (map == NULL)
         return 84;
     map = boat_maker(argv[(argc - 1)], map);
@@ -73,6 +107,9 @@ int start_game(int argc, char *argv[])
         return 84;
     if (find_enemy(argc, argv) == 84)
         return 84;
+        turn = (argc == 2) ? 1 : 2;
+        game(map, &loop, turn);
+    return loop;
 }
 
 int main(int argc, char *argv[])

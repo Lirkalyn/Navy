@@ -5,7 +5,6 @@
 ## Makefile
 ##
 
-#.PHONY : clean fclean re
 .PHONY	:	$(NAME) clean fclean re
 
 NAME	=	navy
@@ -17,7 +16,9 @@ SRC		=	main.c \
 			scr/checker.c \
 			scr/map_maker.c \
 			scr/boat_maker.c \
-			scr/connection.c
+			scr/connection.c \
+			scr/connection2.c \
+			scr/act.c
 
 OBJ		=	$(SRC:.c=.o)
 
@@ -34,5 +35,3 @@ fclean	:	clean
 			make fclean -C lib/my
 
 re		:	fclean $(NAME)
-
-#.PHONY	:	all $(NAME) clean fclean re

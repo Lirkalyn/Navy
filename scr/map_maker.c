@@ -41,7 +41,7 @@ char **map_maker2(char **rsl)
     return map_maker3(rsl);
 }
 
-char **map_maker(char *path)
+char **map_maker(void)
 {
     char **rsl = (char **)malloc(11 * sizeof(char *));
 

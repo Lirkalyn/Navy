@@ -5,10 +5,33 @@
 ** check-desu
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "../include/my.h"
+#include "../include/printf.h"
+
+char *input_check(char **map, char **enemy_map, int *pos)
+{
+    char *line = NULL;
+    size_t size;
+
+    my_printf("\nattack: ");
+    if (getline(&line, &size, stdin) == -1)
+        return NULL;
+    if (line[0] < 'A' || line[0] > 'H') {
+        my_printf("wrong position\n");
+        return input_check(map, enemy_map, pos);
+    }
+    else if (line[1] < '1' || line[1] > '8') {
+        my_printf("wrong position\n");
+        return input_check(map, enemy_map, pos);
+    }
+    pos[0] = (line[0] - 65);
+    pos[1] = ((line[1] - '0') - 1);
+    return line;
+}
 
 int check_map2(char *line)
 {
