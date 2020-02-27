@@ -16,6 +16,15 @@
 
 #include <stdio.h>
 
+int disp(char **map, char **enemy_map)
+{
+    my_printf("my positions:\n");
+    my_show_word_array(map);
+    my_printf("\nenemy's positions:\n");
+    my_show_word_array(enemy_map);
+    my_printf("\n");
+}
+
 char **act(char **map, char **enemy_map, int *letter, int *number)
 {
     char let = (((letter[0] * 4) + (letter[1] * 2) + letter[2]) + 65);
@@ -25,34 +34,32 @@ char **act(char **map, char **enemy_map, int *letter, int *number)
 
     get_pid(-99);
     if (map[coor[1]][coor[0]] == '.') {
-        enemy_map[coor[1]][coor[0]] = 'o';
-        my_printf("%c%c: missed");
+        map[coor[1]][coor[0]] = 'o';
+        my_printf("%c%c: missed\n\n", let, (num + '0'));
         pause();
-        kill(tmp, SIGUSR1);
+        kll(tmp, SIGUSR1);//kill(tmp, SIGUSR1);
     }
     else if (map[coor[1]][coor[0]] >= '1' && map[coor[1]][coor[0]] <= '8') {
         map[coor[1]][coor[0]] = 'x';
-        my_printf("%c%c: hit");
+        my_printf("%c%c: hit\n\n", let, (num + '0'));
         pause();
-        kill(tmp, SIGUSR2);
+        kll(tmp, SIGUSR2);//kill(tmp, SIGUSR2);
     }
     get_pid(tmp);
-    return enemy_map;
+    return map;
 }
 
 char **act2(char **map, char **enemy_map, int touch, char *line)
 {
-    int *coor = boat_maker3(0, line[1], line[0], map);
+    int *coor = boat_maker3(0, (line[1] - '0'), line[0], map);
 
     if (touch == -22) {
-        my_printf("%c%c: hit\n", line[0], line[1]);
-        my_printf("\nwaiting for enemy's attack...\n");
-        enemy_map[coor[1]][coor[0]] = 'o';
+        my_printf("%c%c: hit\n\n", line[0], line[1]);
+        enemy_map[coor[1]][coor[0]] = 'x';
     }
     else if (touch == -21) {
-        my_printf("%c%c: missed\n", line[0], line[1]);
-        my_printf("\nwaiting for enemy's attack...\n");
-        map[coor[1]][coor[0]] = 'x';
+        my_printf("%c%c: missed\n\n", line[0], line[1]);
+        enemy_map[coor[1]][coor[0]] = 'o';
     }
     return enemy_map;
 }

@@ -19,75 +19,67 @@
 
 #include <stdio.h>
 
-/*char **act(char **map, char **enemy_map, int *letter, int *number)
-{
-    char let = (((letter[0] * 4) + (letter[1] * 2) + letter[2]) + 65);
-    char num = ((number[0] * 4) + (number[1] * 2) + number[2] + 1);
-    int *coor = boat_maker3(0, num, let, map);
-    int tmp = get_pid(0);
-
-    get_pid(-99);
-    if (map[coor[1]][coor[0]] == '.') {
-        enemy_map[coor[1]][coor[0]] = 'o';
-        pause();
-        kill(tmp, SIGUSR1);
-    }
-    else if (map[coor[1]][coor[0]] >= '1' && map[coor[1]][coor[0]] <= '8') {
-        map[coor[1]][coor[0]] = 'x';
-        pause();
-        kill(tmp, SIGUSR2);
-    }
-    get_pid(tmp);
-    return enemy_map;
-}*/
-
-int game2(char **map, char ***enemy_map, int *turn, int *pos)
+int player_2(char ***map, char ***enemy_map, int *turn, int *pos)
 {
     char *line = NULL;
     int *letter = (int *)malloc(3 * sizeof(int));
     int *number = (int *)malloc(3 * sizeof(int));
     int touch = 0;
 
-    if (*turn == 1) {
-        line = input_check(map, *enemy_map, pos);
-        if (line == NULL)
-            return 84;
-        send(line, turn, pos);
-        touch = hit_or_miss();
-        *enemy_map = act2(map, *enemy_map, touch, line);
-        *turn += 1;
-    }
-    else if (*turn == 2) {
-        receive(line, turn, letter, number);
-        *enemy_map = act(map, *enemy_map, letter, number);
-        *turn -= 1;
-/*        for (int i = 0; i < 3; i++)
-            my_printf("%d", letter[i]);
-        my_printf("\n");
-        for (int i = 0; i < 3; i++)
-            my_printf("%d", number[i]);*/
-    }
+    disp(*map, *enemy_map);
+    receive(line, turn, letter, number);
+    *map = act(*map, *enemy_map, letter, number);
+    if (end_game(*map) == 1)
+        return 1;
+    line = input_check(*map, *enemy_map, pos);
+    if (line == NULL)
+        return 84;
+    send(line, turn, pos);
+    touch = hit_or_miss();
+    *enemy_map = act2(*map, *enemy_map, touch, line);
+/*    if (end_turn_1(*map) == 1) {
+        my_printf("I won\n");
+        return 0;
+    }*/
+}
+
+int player_1(char ***map, char ***enemy_map, int *turn, int *pos)
+{
+    char *line = NULL;
+    int *letter = (int *)malloc(3 * sizeof(int));
+    int *number = (int *)malloc(3 * sizeof(int));
+    int touch = 0;
+
+    disp(*map, *enemy_map);
+    line = input_check(*map, *enemy_map, pos);
+    if (line == NULL)
+        return 84;
+    send(line, turn, pos);
+    touch = hit_or_miss();
+    *enemy_map = act2(*map, *enemy_map, touch, line);
+    receive(line, turn, letter, number);
+    *map = act(*map, *enemy_map, letter, number);
+    if (end_game(*map) == 1)
+        return 1;
+/*    if (end_turn_1(*map) == 1) {
+        my_printf("I won\n");
+        return 0;
+    }*/
 }
 
 int game(char **map, int *loop, int turn)
 {
     int *pos = (int *)malloc(2 * sizeof(int));
     char **enemy_map;
-    //int loop = 2;
 
     enemy_map = map_maker();
     if (enemy_map == NULL || pos == NULL)
         return 84;
-        my_printf("my positions:\n");
-        my_show_word_array(map);
-        my_printf("\nenemy's positions:\n");
-        my_show_word_array(enemy_map);
     while (*loop == 2) {
-        game2(map, &enemy_map, &turn, pos);
-        my_printf("my positions:\n");
-        my_show_word_array(map);
-        my_printf("\nenemy's positions:\n");
-        my_show_word_array(enemy_map);
+        if (turn == 1)
+            player_1(&map, &enemy_map, &turn, pos);
+        else if (turn == 2)
+            player_2(&map, &enemy_map, &turn, pos);
     }
 }
 

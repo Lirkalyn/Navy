@@ -19,7 +19,7 @@ int hit_or_miss(void)
     int rsl;
 
     get_pid(-20);
-    kill(tmp, SIGUSR1);
+    kll(tmp, SIGUSR1);//kill(tmp, SIGUSR1);
     pause();
     rsl = get_pid(0);
     get_pid(tmp);
@@ -29,9 +29,9 @@ int hit_or_miss(void)
 void send_choice(int pos, int tmp)
 {
     if ((pos % 2) == 0)
-        kill(tmp, SIGUSR1);
+        kll(tmp, SIGUSR1);//kill(tmp, SIGUSR1);
     else if ((pos % 2) == 1)
-        kill(tmp, SIGUSR2);
+        kll(tmp, SIGUSR2);//kill(tmp, SIGUSR2);
 }
 
 int send(char *line, int *turn, int *pos)
@@ -57,11 +57,11 @@ int receive(char *line, int *turn, int *letter, int *number)
     int tmp = get_pid(0);
     struct sigaction sig;
 
-    sig.sa_flags = SA_SIGINFO;
-    sig.sa_sigaction = test;
-    sigaction(SIGUSR1, &sig, NULL);
-    sigaction(SIGUSR2, &sig, NULL);
-    my_printf("\nwaiting for enemy's attack...\n\n");
+        sig.sa_flags = SA_SIGINFO;
+        sig.sa_sigaction = &test;
+        sigaction(SIGUSR1, &sig, NULL);
+        sigaction(SIGUSR2, &sig, NULL);
+    my_printf("waiting for enemy's attack...\n");
     for (int i = 0; i < 6; i++) {
         get_pid(-5);
         pause();
@@ -69,7 +69,7 @@ int receive(char *line, int *turn, int *letter, int *number)
             letter[(2 - i)] = ((get_pid(0) * (-1)) - 1);
         else
             number[(5 - i)] = ((get_pid(0) * (-1)) - 1);
-        kill(tmp, SIGUSR1);
+        kll(tmp, SIGUSR1);//kill(tmp, SIGUSR1);
     }
     get_pid(tmp);
 }

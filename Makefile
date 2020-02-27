@@ -18,7 +18,8 @@ SRC		=	main.c \
 			scr/boat_maker.c \
 			scr/connection.c \
 			scr/connection2.c \
-			scr/act.c
+			scr/act.c \
+			scr/end.c
 
 OBJ		=	$(SRC:.c=.o)
 

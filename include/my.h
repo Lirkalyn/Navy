@@ -30,5 +30,10 @@ int *boat_maker3(int opt, int i, int search, char **map);
 int hit_or_miss(void);
 char **act(char **map, char **enemy_map, int *letter, int *number);
 char **act2(char **map, char **enemy_map, int touch, char *line);
+int disp(char **map, char **enemy_map);
+int end_game(char **map);
+int end_turn_1(char **map);
+int end_turn_2(char **map);
+void kll(int pid, int signal);
 
 #endif

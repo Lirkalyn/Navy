@@ -25,12 +25,12 @@ int get_pid(int pid)
 
 void test(int si, siginfo_t *siginfo, void *context)
 {
-    if (get_pid(0) == 0) {
+    if (get_pid(0) == 0 && si == SIGUSR1) {
         get_pid(siginfo->si_pid);
-        kill(get_pid(0), SIGUSR2);
+        kll(get_pid(0), SIGUSR2);//kill(get_pid(0), SIGUSR2);
         my_printf("enemy connected\n\n");
     }
-    else if (get_pid(0) == siginfo->si_pid)
+    else if (get_pid(0) == siginfo->si_pid && si == SIGUSR2)
         my_printf("successfully connected\n\n");
     if (get_pid(0) == -5 && si == SIGUSR1)
         get_pid(-1);
@@ -40,6 +40,8 @@ void test(int si, siginfo_t *siginfo, void *context)
         get_pid(-21);
     else if (get_pid(0) == -20 && si == SIGUSR2)
         get_pid(-22);
+    if (get_pid(0) == -50 && si == SIGUSR1)
+        get_pid(-51);
 }
 
 int find_enemy(int argc, char *argv[])
@@ -50,7 +52,7 @@ int find_enemy(int argc, char *argv[])
     sig.sa_flags = SA_SIGINFO;
     if (argc == 2) {
         my_printf("waiting for enemy connection...\n\n");
-        sig.sa_sigaction = test;
+        sig.sa_sigaction = &test;
         sigaction(SIGUSR1, &sig, NULL);
         sigaction(SIGUSR2, &sig, NULL);
         pause();
@@ -58,8 +60,9 @@ int find_enemy(int argc, char *argv[])
     else if (argc == 3) {
         for (int i = 0; argv[1][i] != '\0'; i++)
             epid = ((epid * 10) + (argv[1][i] - '0'));
-        kill(epid, SIGUSR1);
-        sig.sa_sigaction = test;
+        kll(epid, SIGUSR1);//kill(epid, SIGUSR1);
+        sig.sa_sigaction = &test;
+        sigaction(SIGUSR1, &sig, NULL);
         sigaction(SIGUSR2, &sig, NULL);
         pause();
     }

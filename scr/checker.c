@@ -17,7 +17,7 @@ char *input_check(char **map, char **enemy_map, int *pos)
     char *line = NULL;
     size_t size;
 
-    my_printf("\nattack: ");
+    my_printf("attack: ");
     if (getline(&line, &size, stdin) == -1)
         return NULL;
     if (line[0] < 'A' || line[0] > 'H') {
