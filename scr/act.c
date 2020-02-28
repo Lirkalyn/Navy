@@ -14,8 +14,6 @@
 #include "../include/my.h"
 #include "../include/printf.h"
 
-#include <stdio.h>
-
 int disp(char **map, char **enemy_map)
 {
     my_printf("my positions:\n");
@@ -37,13 +35,13 @@ char **act(char **map, char **enemy_map, int *letter, int *number)
         map[coor[1]][coor[0]] = 'o';
         my_printf("%c%c: missed\n\n", let, (num + '0'));
         pause();
-        kll(tmp, SIGUSR1);//kill(tmp, SIGUSR1);
+        kll(tmp, SIGUSR1);
     }
     else if (map[coor[1]][coor[0]] >= '1' && map[coor[1]][coor[0]] <= '8') {
         map[coor[1]][coor[0]] = 'x';
         my_printf("%c%c: hit\n\n", let, (num + '0'));
         pause();
-        kll(tmp, SIGUSR2);//kill(tmp, SIGUSR2);
+        kll(tmp, SIGUSR2);
     }
     get_pid(tmp);
     return map;

@@ -5,9 +5,6 @@
 ** main of my_runner
 */
 
-/*#include <stdlib.h>
-#include <time.h>*/
-//#include <sigaction.h>
 #include <sys/signal.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -16,8 +13,6 @@
 #include <unistd.h>
 #include "include/my.h"
 #include "include/printf.h"
-
-#include <stdio.h>
 
 int player_2(char ***map, char ***enemy_map, int *turn, int *pos)
 {

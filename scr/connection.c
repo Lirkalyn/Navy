@@ -27,7 +27,7 @@ void test(int si, siginfo_t *siginfo, void *context)
 {
     if (get_pid(0) == 0 && si == SIGUSR1) {
         get_pid(siginfo->si_pid);
-        kll(get_pid(0), SIGUSR2);//kill(get_pid(0), SIGUSR2);
+        kll(get_pid(0), SIGUSR2);
         my_printf("enemy connected\n\n");
     }
     else if (get_pid(0) == siginfo->si_pid && si == SIGUSR2)
@@ -60,7 +60,7 @@ int find_enemy(int argc, char *argv[])
     else if (argc == 3) {
         for (int i = 0; argv[1][i] != '\0'; i++)
             epid = ((epid * 10) + (argv[1][i] - '0'));
-        kll(epid, SIGUSR1);//kill(epid, SIGUSR1);
+        kll(epid, SIGUSR1);
         sig.sa_sigaction = &test;
         sigaction(SIGUSR1, &sig, NULL);
         sigaction(SIGUSR2, &sig, NULL);
