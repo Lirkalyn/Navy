@@ -32,8 +32,9 @@ char **act(char **map, char **enemy_map, int *letter, int *number);
 char **act2(char **map, char **enemy_map, int touch, char *line);
 int disp(char **map, char **enemy_map);
 int end_game(char **map);
-int end_turn_1(char **map);
-int end_turn_2(char **map);
+//int end_turn_1(char **map);
+//int end_turn_2(char **map);
 void kll(int pid, int signal);
+int end_game_2(char **enemy_map);
 
 #endif

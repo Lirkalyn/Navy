@@ -37,10 +37,10 @@ int player_2(char ***map, char ***enemy_map, int *turn, int *pos)
     send(line, turn, pos);
     touch = hit_or_miss();
     *enemy_map = act2(*map, *enemy_map, touch, line);
-/*    if (end_turn_1(*map) == 1) {
-        my_printf("I won\n");
+    if (end_game_2(*enemy_map) == 1) {
         return 0;
-    }*/
+    }
+    return 2;
 }
 
 int player_1(char ***map, char ***enemy_map, int *turn, int *pos)
@@ -57,14 +57,14 @@ int player_1(char ***map, char ***enemy_map, int *turn, int *pos)
     send(line, turn, pos);
     touch = hit_or_miss();
     *enemy_map = act2(*map, *enemy_map, touch, line);
+    if (end_game_2(*enemy_map) == 1) {
+        return 0;
+    }
     receive(line, turn, letter, number);
     *map = act(*map, *enemy_map, letter, number);
     if (end_game(*map) == 1)
         return 1;
-/*    if (end_turn_1(*map) == 1) {
-        my_printf("I won\n");
-        return 0;
-    }*/
+    return 2;
 }
 
 int game(char **map, int *loop, int turn)
@@ -77,9 +77,9 @@ int game(char **map, int *loop, int turn)
         return 84;
     while (*loop == 2) {
         if (turn == 1)
-            player_1(&map, &enemy_map, &turn, pos);
+            *loop = player_1(&map, &enemy_map, &turn, pos);
         else if (turn == 2)
-            player_2(&map, &enemy_map, &turn, pos);
+            *loop = player_2(&map, &enemy_map, &turn, pos);
     }
 }
 

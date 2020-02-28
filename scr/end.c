@@ -66,6 +66,22 @@ int end_turn_2(char **map)
         }
 }
 
+int end_game_2(char **enemy_map)
+{
+    int nb = 0;
+
+    for (int i = 2; i < 10; i++)
+        for (int j = 2; j < 17; j++)
+            if (enemy_map[i][j] == 'x')
+                nb += 1;
+    if (nb == 14) {
+        my_printf("I won\n");
+        return 1;
+    }
+    else
+        return 0;
+}
+
 int end_game(char **map)
 {
     int nb[4] = {[0 ... 3] = 0};
@@ -84,7 +100,7 @@ int end_game(char **map)
 //    my_printf("2 = %d, 3 = %d, 4 = %d, 5 = %d", nb[0], nb[1], nb[2], nb[3]);
     if (nb[0] == 0 && nb[1] == 0 && nb[2] == 0 && nb[3] == 0) {
         my_printf("Enemy won\n");
-        kll(get_pid(0), SIGUSR1);
+//        kll(get_pid(0), SIGUSR1);
         return 1;
     }
     else
