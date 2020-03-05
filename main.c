@@ -90,12 +90,12 @@ int start_game(int argc, char *argv[])
     if (map == NULL)
         return 84;
     map = boat_maker(argv[(argc - 1)], map);
-    if (map[0][0] == '0')
+    if (map == NULL || map[0][0] == '0')
         return 84;
     if (find_enemy(argc, argv) == 84)
         return 84;
-        turn = (argc == 2) ? 1 : 2;
-        game(map, &loop, turn);
+    turn = (argc == 2) ? 1 : 2;
+    game(map, &loop, turn);
     return loop;
 }
 

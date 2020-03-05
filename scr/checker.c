@@ -62,14 +62,14 @@ int check_map(char *path)
     char *buf;
     char *tmp;
     int fd = open(path, O_RDONLY);
-    int lenght = 31;
     int i = 0;
 
-    buf = (char *)malloc((lenght + 1) * sizeof(char));
+    buf = (char *)malloc((31 + 1) * sizeof(char));
     if (fd == -1 || buf == NULL)
-        return 84;
-    read(fd, buf, lenght);
-    buf[lenght] = '\0';
+        return 1;
+    if (read(fd, buf, 31) != 31)
+        return 1;
+    buf[31] = '\0';
     close(fd);
     while (buf[i] != '\0') {
         i += (i != 0) ? 1 : 0;

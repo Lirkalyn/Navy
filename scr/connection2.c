@@ -57,10 +57,10 @@ int receive(char *line, int *turn, int *letter, int *number)
     int tmp = get_pid(0);
     struct sigaction sig;
 
-        sig.sa_flags = SA_SIGINFO;
-        sig.sa_sigaction = &test;
-        sigaction(SIGUSR1, &sig, NULL);
-        sigaction(SIGUSR2, &sig, NULL);
+    sig.sa_flags = SA_SIGINFO;
+    sig.sa_sigaction = &test;
+    sigaction(SIGUSR1, &sig, NULL);
+    sigaction(SIGUSR2, &sig, NULL);
     my_printf("waiting for enemy's attack...\n");
     for (int i = 0; i < 6; i++) {
         get_pid(-5);

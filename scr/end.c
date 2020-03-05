@@ -26,8 +26,7 @@ int end_game_2(char **enemy_map)
 
     for (int i = 2; i < 10; i++)
         for (int j = 2; j < 17; j++)
-            if (enemy_map[i][j] == 'x')
-                nb += 1;
+            nb += (enemy_map[i][j] == 'x') ? 1 : 0;
     if (nb == 14) {
         my_printf("I won\n");
         return 1;
@@ -42,14 +41,10 @@ int end_game(char **map)
 
     for (int i = 2; i < 10; i++)
         for (int j = 2; j < 17; j++) {
-            if (map[i][j] == '2')
-                nb[0] += 1;
-            if (map[i][j] == '3')
-                nb[1] += 1;
-            if (map[i][j] == '4')
-                nb[2] += 1;
-            if (map[i][j] == '5')
-                nb[3] += 1;
+            nb[0] += (map[i][j] == '2') ? 1 : 0;
+            nb[1] += (map[i][j] == '3') ? 1 : 0;
+            nb[2] += (map[i][j] == '4') ? 1 : 0;
+            nb[3] += (map[i][j] == '5') ? 1 : 0;
         }
     if (nb[0] == 0 && nb[1] == 0 && nb[2] == 0 && nb[3] == 0) {
         my_printf("Enemy won\n");

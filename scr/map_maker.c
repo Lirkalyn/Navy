@@ -14,10 +14,7 @@ char **map_maker3(char **rsl)
         rsl[i][0] = ((i - 1) + '0');
         rsl[i][1] = '|';
         for (int j = 2; j < 17; j++)
-            if (j % 2 == 0)
-                rsl[i][j] = '.';
-            else
-                rsl[i][j] = ' ';
+            rsl[i][j] = (j % 2 == 0) ? '.' : ' ';
     }
     return rsl;
 }

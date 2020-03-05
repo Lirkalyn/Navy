@@ -83,7 +83,8 @@ char **boat_maker(char *path, char **map)
     buf = (char *)malloc((lenght + 1) * sizeof(char));
     if (fd == -1 || buf == NULL)
         return NULL;
-    read(fd, buf, lenght);
+    if (read(fd, buf, lenght) != 31)
+        return NULL;
     buf[lenght] = '\0';
     close(fd);
     while (buf[i] != '\0') {
